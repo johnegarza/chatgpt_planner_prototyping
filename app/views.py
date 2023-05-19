@@ -1,9 +1,11 @@
-from flask import request, render_template, redirect, url_for
+from flask import Blueprint, request, render_template, redirect, url_for
 from datetime import datetime
-from . import db, app
 from .models import Note
+from . import db
 
-@app.route('/notes', methods=['GET', 'POST'])
+views = Blueprint('views', __name__)
+
+@views.route('/notes', methods=['GET', 'POST'])
 def notes():
     if request.method == 'POST':
         title = request.form['title']
@@ -20,7 +22,7 @@ def notes():
     notes = Note.query.order_by(Note.created_at.desc()).all()
     return render_template('notes.html', notes=notes)
 
-@app.route('/notes/<int:id>', methods=['GET', 'POST'])
+@views.route('/notes/<int:id>', methods=['GET', 'POST'])
 def edit_note(id):
     note = Note.query.get_or_404(id)
 

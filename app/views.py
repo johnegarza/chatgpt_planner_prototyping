@@ -1,5 +1,6 @@
 from flask import request, render_template, redirect, url_for
-from . import db
+from datetime import datetime
+from . import db, app
 from .models import Note
 
 @app.route('/notes', methods=['GET', 'POST'])

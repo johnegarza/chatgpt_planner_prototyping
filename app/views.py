@@ -43,10 +43,18 @@ def new_note():
     if request.method == 'POST':
         title = request.form['title']  
         body = request.form['body']  
-        tags = request.form['tags']  
+        tags = request.form['tags'].split(',')
         project = request.form['project']  
 
         new_note = Note(title=title, body=body, tags=tags, project=project)  
+        for tag_name in tags:
+            tag = Tag.query.filter_by(name=tag_name).first()
+            if tag is None:
+                tag = Tag(name=tag_name)
+                db.session.add(tag)
+
+            new_note.tags.append(tag)
+
         db.session.add(new_note)  
         db.session.commit()  
 

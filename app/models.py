@@ -23,7 +23,7 @@ class Note(db.Model):
     body = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     last_modified = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    tags = db.relationship('Tag', secondary=notes_tags, backref=db.backref('notes', lazy='dynamic'))
+    tags = db.relationship('Tag', secondary='notes_tags', backref=db.backref('notes', lazy='dynamic'))
     project = db.Column(db.String(120))
     task_id = db.Column(db.Integer, db.ForeignKey('task.id'))
 
@@ -34,7 +34,7 @@ class Task(db.Model):
     priority = db.Column(db.Integer, default=0)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     notes = db.relationship('Note', backref='task', lazy=True)
-    tags = db.relationship('Tag', secondary=tasks_tags, backref=db.backref('tasks', lazy='dynamic'))
+    tags = db.relationship('Tag', secondary='tasks_tags', backref=db.backref('tasks', lazy='dynamic'))
     project = db.Column(db.String(120))
 
 class Habit(db.Model):

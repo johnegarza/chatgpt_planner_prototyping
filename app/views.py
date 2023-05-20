@@ -1,6 +1,6 @@
 from flask import Blueprint, request, render_template, redirect, url_for
 from datetime import datetime
-from .models import Note
+from .models import Note, Tag
 from . import db
 
 views = Blueprint('views', __name__)
@@ -43,17 +43,20 @@ def new_note():
     if request.method == 'POST':
         title = request.form['title']  
         body = request.form['body']  
-        tags = request.form['tags'].split(',')
+        tag_names = request.form['tags'].split(',')
         project = request.form['project']  
 
-        new_note = Note(title=title, body=body, tags=tags, project=project)  
-        for tag_name in tags:
+        tags = []
+        for tag_name in tag_names:
+            tag_name = tag_name.strip()  # Remove leading/trailing whitespace
             tag = Tag.query.filter_by(name=tag_name).first()
             if tag is None:
                 tag = Tag(name=tag_name)
                 db.session.add(tag)
 
-            new_note.tags.append(tag)
+            tags.append(tag)
+
+        new_note = Note(title=title, body=body, tags=tags, project=project)  
 
         db.session.add(new_note)  
         db.session.commit()  

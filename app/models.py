@@ -9,15 +9,16 @@ class Tag(db.Model):
 
 class NoteTag(db.Model):
     __tablename__ = 'notes_tags'
-    note_id = db.Column(db.Integer, db.ForeignKey('note.id'), nullable=False, primary_key=True)
-    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'), nullable=False, primary_key=True)
+    note_id = db.Column(db.Integer, db.ForeignKey('notes.id'), nullable=False, primary_key=True)
+    tag_id = db.Column(db.Integer, db.ForeignKey('tags.id'), nullable=False, primary_key=True)
 
 class TaskTag(db.Model):
     __tablename__ = 'tasks_tags'
-    task_id = db.Column(db.Integer, db.ForeignKey('task.id'), nullable=False, primary_key=True)
-    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'), nullable=False, primary_key=True)
+    task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'), nullable=False, primary_key=True)
+    tag_id = db.Column(db.Integer, db.ForeignKey('tags.id'), nullable=False, primary_key=True)
 
 class Note(db.Model):
+    __tablename__ = 'notes'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120), nullable=False)
     body = db.Column(db.Text, nullable=False)
@@ -28,6 +29,7 @@ class Note(db.Model):
     task_id = db.Column(db.Integer, db.ForeignKey('task.id'))
 
 class Task(db.Model):
+    __tablename__ = 'tasks'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120), nullable=False)
     due_date = db.Column(db.DateTime, nullable=False)

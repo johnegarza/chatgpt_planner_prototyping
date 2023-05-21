@@ -5,7 +5,7 @@ class Tag(db.Model):
     __tablename__ = 'tags'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=True, nullable=False)
-    notes = db.relationship('NoteTag', back_populates='tag', secondary='notes_tags')
+    notes = db.relationship('Note', secondary='notes_tags', backref='tags')
     tasks = db.relationship('TaskTag', back_populates='tag', secondary='tasks_tags')
 
 class NoteTag(db.Model):
@@ -25,7 +25,6 @@ class Note(db.Model):
     body = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     last_modified = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    tags = db.relationship('Tag', secondary='notes_tags', backref=db.backref('notes', lazy='dynamic'))
     project = db.Column(db.String(120))
     task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
 

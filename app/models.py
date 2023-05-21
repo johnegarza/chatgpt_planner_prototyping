@@ -6,7 +6,7 @@ class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=True, nullable=False)
     notes = db.relationship('Note', secondary='notes_tags', backref='tags')
-    tasks = db.relationship('TaskTag', back_populates='tag', secondary='tasks_tags')
+    tasks = db.relationship('Task', secondary='tasks_tags', backref='tags')
 
 class NoteTag(db.Model):
     __tablename__ = 'notes_tags'
@@ -36,7 +36,7 @@ class Task(db.Model):
     priority = db.Column(db.Integer, default=0)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     notes = db.relationship('Note', backref='task', lazy=True)
-    tags = db.relationship('Tag', secondary='tasks_tags', backref=db.backref('tasks', lazy='dynamic'))
+    #tags = db.relationship('Tag', secondary='tasks_tags', backref=db.backref('tasks', lazy='dynamic'))
     project = db.Column(db.String(120))
 
 class Habit(db.Model):
